@@ -12,6 +12,6 @@ public class SurfaceRenderingTask extends RenderingTask<Polygon> {
 
     @Override
     protected void performRendering(Graphics g) {
-        g.drawPolygon(shape);
+        g.fillPolygon(shape);
     }
 }

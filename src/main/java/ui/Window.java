@@ -14,7 +14,7 @@ import static utilities.Constants.SCREEN_SIZE;
 
 public class Window extends JFrame {
     private RubiksCube rubiksCube = new RubiksCube();
-    private ViewPlane view = new ViewPlane(unitVector(1, 1, 1), 500);
+    private ViewPlane view = new ViewPlane(unitVector(1, 1, 1), 300);
     private final JPanel canvas = new JPanel();
     public Window() {
         setSize(SCREEN_SIZE);
@@ -23,6 +23,7 @@ public class Window extends JFrame {
         add(canvas);
         canvas.setSize(SCREEN_SIZE);
         setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         render();
     }
 

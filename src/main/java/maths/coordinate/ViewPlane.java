@@ -45,13 +45,19 @@ public class ViewPlane {
         Vector3D l = leftCorner;
 
         double y = (p.z() - l.z()) / v.z();
-        double x = (p.x() - y * v.x() - l.x()) / h.x();
+        double x; // TODO cover h.x() == 0.00 case
+        if (h.x() == 0.00) {
+            x = (p.y() - y * v.y() - l.y()) / h.y();
+        } else {
+            x = (p.x() - y * v.x() - l.x()) / h.x();
+        }
+        System.out.println(toString() + " projected point " + point + " -> " + new Coordinates(x, y));
         return new Coordinates(x, y);
     }
 
     private Vector3D calculateProjectedPoint(Vector3D point) {
         Vector3D vectorPointingToPoint = point.subtract(centerPoint);
-        double distance = vectorPointingToPoint.scalarMultiply(normalVector);
+        double distance = Math.abs(vectorPointingToPoint.scalarMultiply(normalVector));
         return point.plus(normalVector.multiply(distance));
     }
 
@@ -63,9 +69,13 @@ public class ViewPlane {
         UnitVector3D verticalUnit = verticalUnitVector();
 
         return new Vector3D(
-                centerPoint.x() - offsetX * horizontalUnit.x() + offsetY * verticalUnit.x(),
+                centerPoint.x() - offsetX * horizontalUnit.x() - offsetY * verticalUnit.x(),
                 centerPoint.y() - offsetX * horizontalUnit.y() + offsetY * verticalUnit.y(),
-                centerPoint.z() - offsetX * horizontalUnit.z() + offsetY * verticalUnit.z()
+                centerPoint.z() - offsetX * horizontalUnit.z() - offsetY * verticalUnit.z()
         );
+    }
+
+    public String toString() {
+        return "[v="+normalVector + ", p=" + centerPoint+"]";
     }
 }

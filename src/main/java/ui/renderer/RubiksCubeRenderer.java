@@ -37,8 +37,6 @@ public class RubiksCubeRenderer {
         List<RenderingTask> renderingTasks = rubiksCube.getRenderingTasks(viewPlane);
         Graphics graphics = target.getGraphics();
         renderingTasks
-                .stream()
-                .filter(task -> task instanceof SurfaceRenderingTask)
                 .forEach(task -> task.render(graphics));
     }
 

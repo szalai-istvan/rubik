@@ -84,17 +84,18 @@ public class CubeSides {
 
         Vector3D[] corners = new Vector3D[x.length * y.length * z.length];
         int index = 0;
-        for (int x_ : x) {
-            for (int y_ : y) {
-                for (int z_ : z) {
-                    corners[index++] = vector(
-                            cube.midPoint.x() + x_ * HALF_LENGTH,
-                            cube.midPoint.y() + y_ * HALF_LENGTH,
-                            cube.midPoint.z() + z_ * HALF_LENGTH
+        for (int ix = 0; ix < x.length; ix++) {
+            for (int iy = 0; iy < y.length; iy++) {
+                for (int iz = 0; iz < z.length; iz++) {
+                    corners[INDEX_ORDER[index++]] = vector(
+                            cube.midPoint.x() + x[ix] * HALF_LENGTH,
+                            cube.midPoint.y() + y[iy] * HALF_LENGTH,
+                            cube.midPoint.z() + z[iz] * HALF_LENGTH
                     );
                 }
             }
         }
+
         return corners;
     }
 

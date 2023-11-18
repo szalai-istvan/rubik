@@ -9,10 +9,10 @@ public class ProjectionTest {
     @Test
     public void project() {
         ViewPlane viewPlane = new ViewPlane(
-                unitVector(1, 1, 1),
-                100);
+                unitVector(1, 1, 0),
+                500);
 
         // center: 432, 768
-        viewPlane.projectPointToPlane(vector(1, 1, 1));
+        viewPlane.projectPointToPlane(vector(0, 0, 0));
     }
 }

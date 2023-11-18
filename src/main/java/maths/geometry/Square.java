@@ -81,7 +81,7 @@ public class Square {
     }
 
     public boolean isLookingAt(ViewPlane viewPlane) {
-        return normalDirection.scalarMultiply(viewPlane.getNormalVector()) < 0.00;
+        return normalDirection.scalarMultiply(viewPlane.getNormalVector()) > 0.00;
     }
 
     private int[] xPoints(Coordinates[] projectedCorners) {

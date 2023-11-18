@@ -3,8 +3,7 @@ package ui.renderer;
 import java.awt.*;
 import java.awt.geom.Line2D;
 
-import static java.awt.Color.GREEN;
-import static java.awt.Color.PINK;
+import static java.awt.Color.*;
 
 public class LineRenderingTask extends RenderingTask<Line2D> {
 
@@ -13,14 +12,14 @@ public class LineRenderingTask extends RenderingTask<Line2D> {
     }
 
     public LineRenderingTask(Line2D shape) {
-        super(PINK, shape);
+        super(GRAY, shape);
     }
 
     @Override
     protected void beforeRender(Graphics g) {
         super.beforeRender(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(6));
+        g2d.setStroke(new BasicStroke(3));
     }
 
     @Override

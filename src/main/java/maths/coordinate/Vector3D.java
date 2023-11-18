@@ -16,7 +16,7 @@ public class Vector3D {
     }
 
     public double y() {
-        return z;
+        return y;
     }
 
     public double z() {
@@ -113,5 +113,9 @@ public class Vector3D {
         }
 
         return false;
+    }
+
+    public String toString() {
+        return "[" + x + ", " + y + ", " + z + "]";
     }
 }
