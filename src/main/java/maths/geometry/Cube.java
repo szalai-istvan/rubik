@@ -1,6 +1,10 @@
 package maths.geometry;
 
 import maths.coordinate.Vector3D;
+import maths.coordinate.ViewPlane;
+import ui.renderer.RenderingTask;
+
+import java.util.List;
 
 public class Cube {
 
@@ -20,5 +24,10 @@ public class Cube {
     public Vector3D getMidPoint() {
         return midPoint;
     }
+
+    public List<RenderingTask> getRenderingTasks(ViewPlane viewPlane) {
+        return sides.getRenderingTasks(viewPlane);
+    }
+
 
 }

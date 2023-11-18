@@ -1,12 +1,17 @@
 package maths.geometry;
 
 import maths.coordinate.Vector3D;
+import maths.coordinate.ViewPlane;
+import ui.renderer.RenderingTask;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.awt.Color.BLACK;
+import static java.util.stream.Collectors.toList;
 import static maths.coordinate.Vector3D.vector;
 import static utilities.Constants.*;
 import static utilities.UnitVectors.*;
@@ -54,6 +59,13 @@ public class CubeSides {
 
     public CubeSides setZNegative(Color color) {
         return setSide(Z_NEGATIVE, color);
+    }
+
+    List<RenderingTask> getRenderingTasks(ViewPlane viewPlane) {
+        return sides.values().stream()
+                .filter(square -> square.isLookingAt(viewPlane))
+                .flatMap(square -> square.getRenderingTasks(viewPlane).stream())
+                .collect(toList());
     }
 
     private CubeSides setSide(Vector3D vector, Color color) {

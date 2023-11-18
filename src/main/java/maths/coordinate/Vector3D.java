@@ -27,7 +27,7 @@ public class Vector3D {
         return new Vector3D(x, y, z);
     }
 
-    public Vector3D add(Vector3D v) {
+    public Vector3D plus(Vector3D v) {
         return new Vector3D(
                 x + v.x,
                 y + v.y,
@@ -100,13 +100,16 @@ public class Vector3D {
             return false;
         }
 
+        Vector3D this_;
         if (obj instanceof UnitVector3D) {
-            return toUnitVector().equals(obj);
+            this_ = toUnitVector();
+        } else {
+            this_ = this;
         }
 
         if (obj instanceof Vector3D) {
             Vector3D v = (Vector3D) obj;
-            return x == v.x && y == v.y && z == v.z;
+            return this_.x == v.x && this_.y == v.y && this_.z == v.z;
         }
 
         return false;
