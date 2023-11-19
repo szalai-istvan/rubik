@@ -1,7 +1,7 @@
 package maths.geometry;
 
-import maths.coordinate.Vector3D;
-import maths.coordinate.ViewPlane;
+import maths.coordinate.vector.Vector3D;
+import maths.coordinate.plane.ViewPlane;
 import ui.renderer.RenderingTask;
 
 import java.util.List;

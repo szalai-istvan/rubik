@@ -1,5 +1,12 @@
-package maths.coordinate;
+package maths.coordinate.plane;
 
+import maths.coordinate.Coordinates;
+import maths.coordinate.vector.UnitVector3D;
+import maths.coordinate.vector.Vector3D;
+import maths.coordinate.vector.rotator.Rotator;
+import maths.geometry.Cube;
+
+import static maths.coordinate.vector.Vector3D.vector;
 import static utilities.Constants.SCREEN_SIZE;
 import static utilities.UnitVectors.Z_POSITIVE;
 
@@ -45,14 +52,29 @@ public class ViewPlane {
         Vector3D l = leftCorner;
 
         double y = (p.z() - l.z()) / v.z();
-        double x; // TODO cover h.x() == 0.00 case
-        if (h.x() == 0.00) {
+        double x;
+        if (Math.abs(h.x()) < 1E-10) {
             x = (p.y() - y * v.y() - l.y()) / h.y();
         } else {
             x = (p.x() - y * v.x() - l.x()) / h.x();
         }
-        System.out.println(toString() + " projected point " + point + " -> " + new Coordinates(x, y));
         return new Coordinates(x, y);
+    }
+
+    public ViewPlane rotateAround(Rotator rotator, double degrees) {
+        return new ViewPlane(
+                normalVector.rotateAround(rotator, degrees).toUnitVector(),
+                centerPoint.rotateAround(rotator, degrees)
+        );
+    }
+
+    public double distanceFrom(Vector3D point) {
+        Vector3D projected = calculateProjectedPoint(point);
+        return projected.distanceFrom(point);
+    }
+
+    public double distanceFrom(Cube cube) {
+        return distanceFrom(cube.getMidPoint());
     }
 
     private Vector3D calculateProjectedPoint(Vector3D point) {
@@ -68,7 +90,7 @@ public class ViewPlane {
         UnitVector3D horizontalUnit = horizontalUnitVector();
         UnitVector3D verticalUnit = verticalUnitVector();
 
-        return new Vector3D(
+        return vector(
                 centerPoint.x() - offsetX * horizontalUnit.x() - offsetY * verticalUnit.x(),
                 centerPoint.y() - offsetX * horizontalUnit.y() + offsetY * verticalUnit.y(),
                 centerPoint.z() - offsetX * horizontalUnit.z() - offsetY * verticalUnit.z()

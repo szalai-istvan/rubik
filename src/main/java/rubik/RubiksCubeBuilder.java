@@ -1,18 +1,16 @@
 package rubik;
 
-import maths.coordinate.Vector3D;
+import maths.coordinate.vector.Vector3D;
 import maths.geometry.Cube;
 import maths.geometry.CubeSides;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static java.awt.Color.*;
-import static maths.coordinate.Vector3D.vector;
+import static maths.coordinate.vector.Vector3D.vector;
 import static utilities.Constants.CUBE_LENGTH;
 import static utilities.Constants.STEP;
 import static utilities.UnitVectors.*;
@@ -20,11 +18,11 @@ import static utilities.UnitVectors.*;
 public class RubiksCubeBuilder {
     Map<Color, Vector3D> COLOR_DIRECTIONS = Map.of(
             RED, X_POSITIVE,
-            WHITE, Y_POSITIVE,
-            GREEN, Z_POSITIVE,
+            GREEN, Y_POSITIVE,
+            WHITE, Z_POSITIVE,
             ORANGE, X_NEGATIVE,
-            YELLOW, Y_NEGATIVE,
-            BLUE, Z_NEGATIVE
+            BLUE, Y_NEGATIVE,
+            YELLOW, Z_NEGATIVE
     );
 
     private final RubiksCube rubiksCube;
@@ -72,19 +70,19 @@ public class RubiksCubeBuilder {
     }
 
     RubiksCubeBuilder buildWhiteSide() {
-        return buildSide(WHITE, sides -> sides.setYPositive(WHITE));
+        return buildSide(WHITE, sides -> sides.setZPositive(WHITE));
     }
 
     RubiksCubeBuilder buildYellowSide() {
-        return buildSide(YELLOW, sides -> sides.setYNegative(YELLOW));
+        return buildSide(YELLOW, sides -> sides.setZNegative(YELLOW));
     }
 
     RubiksCubeBuilder buildGreenSide() {
-        return buildSide(GREEN, sides -> sides.setZPositive(GREEN));
+        return buildSide(GREEN, sides -> sides.setYPositive(GREEN));
     }
 
     RubiksCubeBuilder buildBlueSide() {
-        return buildSide(BLUE, sides -> sides.setZNegative(BLUE));
+        return buildSide(BLUE, sides -> sides.setYNegative(BLUE));
     }
 
     private RubiksCubeBuilder buildSide(Color color, Consumer<CubeSides> task) {

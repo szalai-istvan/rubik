@@ -1,4 +1,6 @@
-package maths.coordinate;
+package maths.coordinate.plane;
+
+import maths.coordinate.vector.UnitVector3D;
 
 public class InPlaneVectors {
     private final UnitVector3D horizontalUnit;

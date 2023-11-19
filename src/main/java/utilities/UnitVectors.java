@@ -1,10 +1,8 @@
 package utilities;
 
-import maths.coordinate.UnitVector3D;
-import maths.coordinate.Vector3D;
+import maths.coordinate.vector.UnitVector3D;
 
-import static maths.coordinate.UnitVector3D.unitVector;
-import static maths.coordinate.Vector3D.vector;
+import static maths.coordinate.vector.UnitVector3D.unitVector;
 
 public class UnitVectors {
     public static final UnitVector3D X_POSITIVE = unitVector(1, 0, 0);

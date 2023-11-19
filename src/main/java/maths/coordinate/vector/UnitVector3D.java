@@ -1,4 +1,4 @@
-package maths.coordinate;
+package maths.coordinate.vector;
 
 public class UnitVector3D extends Vector3D {
     UnitVector3D(double x, double y, double z) {

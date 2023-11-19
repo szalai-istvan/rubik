@@ -1,18 +1,17 @@
 package maths.geometry;
 
-import maths.coordinate.Vector3D;
-import maths.coordinate.ViewPlane;
+import maths.coordinate.vector.Vector3D;
+import maths.coordinate.plane.ViewPlane;
 import ui.renderer.RenderingTask;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.awt.Color.BLACK;
 import static java.util.stream.Collectors.toList;
-import static maths.coordinate.Vector3D.vector;
+import static maths.coordinate.vector.Vector3D.vector;
 import static utilities.Constants.*;
 import static utilities.UnitVectors.*;
 

@@ -12,14 +12,14 @@ public class LineRenderingTask extends RenderingTask<Line2D> {
     }
 
     public LineRenderingTask(Line2D shape) {
-        super(GRAY, shape);
+        super(BLACK, shape);
     }
 
     @Override
     protected void beforeRender(Graphics g) {
         super.beforeRender(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(3));
+        g2d.setStroke(new BasicStroke(10));
     }
 
     @Override

@@ -1,4 +1,6 @@
-package maths.coordinate;
+package maths.coordinate.vector;
+
+import maths.coordinate.vector.rotator.Rotator;
 
 public class Vector3D {
     private final double x;
@@ -80,6 +82,16 @@ public class Vector3D {
     public UnitVector3D toUnitVector() {
         Vector3D divide = divide(abs());
         return new UnitVector3D(divide.x, divide.y, divide.z);
+    }
+
+    public Vector3D rotateAround(Rotator rotator, double degrees) {
+        return rotator.rotate(this, degrees);
+    }
+
+    public double distanceFrom(Vector3D point) {
+        return Math.sqrt((point.x - x) * (point.x - x) +
+                (point.y - y) * (point.y - y) +
+                (point.z - z) * (point.z - z));
     }
 
     @Override

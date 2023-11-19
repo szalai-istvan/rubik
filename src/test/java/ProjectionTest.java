@@ -1,9 +1,8 @@
-import maths.coordinate.UnitVector3D;
-import maths.coordinate.ViewPlane;
+import maths.coordinate.plane.ViewPlane;
 import org.junit.Test;
 
-import static maths.coordinate.UnitVector3D.unitVector;
-import static maths.coordinate.Vector3D.vector;
+import static maths.coordinate.vector.UnitVector3D.unitVector;
+import static maths.coordinate.vector.Vector3D.vector;
 
 public class ProjectionTest {
     @Test

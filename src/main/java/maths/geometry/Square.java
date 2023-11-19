@@ -1,8 +1,8 @@
 package maths.geometry;
 
 import maths.coordinate.Coordinates;
-import maths.coordinate.Vector3D;
-import maths.coordinate.ViewPlane;
+import maths.coordinate.vector.Vector3D;
+import maths.coordinate.plane.ViewPlane;
 import ui.renderer.LineRenderingTask;
 import ui.renderer.RenderingTask;
 import ui.renderer.SurfaceRenderingTask;
@@ -70,7 +70,7 @@ public class Square {
     }
 
     private RenderingTask getSurfaceRenderingTask(Coordinates[] projectedCorners) {
-        return new SurfaceRenderingTask(color, toPolygon(projectedCorners));
+        return new SurfaceRenderingTask(color, toPolygon(projectedCorners), this);
     }
 
     public Polygon toPolygon(Coordinates[] projectedCorners) {
@@ -90,6 +90,10 @@ public class Square {
 
     private int[] yPoints(Coordinates[] projectedCorners) {
         return coordinates(projectedCorners, corner -> (int) corner.y);
+    }
+
+    public double cosAlpha(ViewPlane viewPlane) {
+        return normalDirection.cosAlpha(viewPlane.getNormalVector());
     }
 
     private int[] coordinates(Coordinates[] projectedCorners, Function<Coordinates, Integer> mapper) {
