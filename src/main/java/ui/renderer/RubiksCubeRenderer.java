@@ -54,17 +54,17 @@ public class RubiksCubeRenderer {
     }
 
     private void prepare(Graphics graphics) {
-        graphics.setColor(WHITE);
+        graphics.setColor(BLACK);
         graphics.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        int shade = 255;
+        int shade = 0;
         int dOffset = 0;
-        while (shade > 64) {
+        while (shade < 192) {
             drawCenteredCircle(
                     graphics,
                     600 + dOffset,
                     new Color(shade, shade, shade));
-            shade -= 16;
+            shade += 16;
             dOffset -= 10;
         }
     }

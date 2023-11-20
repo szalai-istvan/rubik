@@ -14,7 +14,7 @@ import static utilities.UnitVectors.*;
 public abstract class CubeRotator {
     protected final Collection<Cube> cubes;
     protected final UnitVector3D axis;
-    protected final double angle;
+    protected double angle;
 
     CubeRotator(Collection<Cube> cubes, UnitVector3D axis, double angle) {
         this.cubes = cubes;

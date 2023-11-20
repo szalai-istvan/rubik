@@ -1,6 +1,7 @@
 package ui;
 
 import ui.eventhandlers.CubeScrambler;
+import ui.eventhandlers.FlipListener;
 import ui.eventhandlers.RotationListener;
 import ui.eventhandlers.ShiftListener;
 
@@ -62,6 +63,11 @@ public class WindowSetupTool {
     @SetupMethod
     public void addCubeScrambler() {
         window.addKeyListener(new CubeScrambler(window));
+    }
+
+    @SetupMethod
+    public void addFlipListener() {
+        window.addKeyListener(new FlipListener(window));
     }
 
     private boolean isSetupMethod(Method method) {

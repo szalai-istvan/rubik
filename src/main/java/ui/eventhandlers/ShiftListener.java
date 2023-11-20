@@ -16,8 +16,8 @@ public class ShiftListener extends KeyAdapter {
             'S', window -> window.shiftDown(),
             'D', window -> window.shiftRight(),
             'W', window -> window.shiftUp(),
-            'E', window -> window.rotateSelectedFaceRight(),
-            'Q', window -> window.rotateSelectedFaceLeft()
+            'E', window -> window.rotateSelectedFaceRightWithAnimation(),
+            'Q', window -> window.rotateSelectedFaceLeftWithAnimation()
 
     );
 

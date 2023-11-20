@@ -5,10 +5,8 @@ import maths.coordinate.plane.ViewPlane;
 import ui.renderer.RenderingTask;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static java.awt.Color.BLACK;
 import static java.util.stream.Collectors.toList;
@@ -17,9 +15,17 @@ import static utilities.Constants.*;
 import static utilities.UnitVectors.*;
 
 public class CubeSides {
-    final Map<Vector3D, Square> sides;
+    protected Map<Vector3D, Square> sides;
 
-    private final Cube cube;
+    protected final Cube cube;
+
+    public CubeSides(Cube cube, Collection<Square> squares) {
+        this.cube = cube;
+        sides = new HashMap<>();
+        for (Square s : squares) {
+            addSide(s);
+        }
+    }
 
     public CubeSides(Cube cube) {
         this.cube = cube;
@@ -75,13 +81,19 @@ public class CubeSides {
     public CubeSides setSide(Vector3D vector, Color color) {
         Square square = new Square(color);
         square.setNormalDirection(vector);
-        Vector3D[] corners = calculateCornerPoints(vector);
+        Vector3D[] corners = calculateCornerPoints(square);
         square.setCorners(corners);
         sides.put(vector, square);
         return this;
     }
 
-    private Vector3D[] calculateCornerPoints(Vector3D v) {
+    private CubeSides addSide(Square s) {
+        sides.put(s.getNormalDirection(), s);
+        return this;
+    }
+
+    protected Vector3D[] calculateCornerPoints(Square square) {
+        Vector3D v = square.getNormalDirection();
         int[] x = toStepArray(v.x());
         int[] y = toStepArray(v.y());
         int[] z = toStepArray(v.z());

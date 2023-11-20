@@ -7,7 +7,7 @@ import maths.coordinate.vector.rotator.VectorRotator;
 import maths.geometry.Cube;
 
 import static maths.coordinate.vector.Vector3D.vector;
-import static utilities.Constants.SCREEN_SIZE;
+import static utilities.Constants.*;
 import static utilities.UnitVectors.Z_POSITIVE;
 
 public class ViewPlane {
@@ -15,6 +15,7 @@ public class ViewPlane {
     private final Vector3D centerPoint;
     private final InPlaneVectors inPlaneVectors;
     private final Vector3D leftCorner;
+    private boolean flipped = false;
 
     public ViewPlane(UnitVector3D normalVector, Vector3D centerPoint) {
         this.normalVector = normalVector;
@@ -25,6 +26,11 @@ public class ViewPlane {
 
     public ViewPlane(UnitVector3D normalVector, double viewRadius) {
         this(normalVector, normalVector.multiply(viewRadius));
+    }
+
+    private ViewPlane(UnitVector3D normalVector, Vector3D centerPoint, boolean flipped) {
+        this(normalVector, centerPoint);
+        this.flipped = flipped;
     }
 
     private InPlaneVectors calculateInPlaneVectors() {
@@ -58,13 +64,24 @@ public class ViewPlane {
         } else {
             x = (p.x() - y * v.x() - l.x()) / h.x();
         }
-        return new Coordinates(x, y);
+        if (flipped) {
+            return new Coordinates(
+                    SCREEN_WIDTH - x,
+                    SCREEN_HEIGHT - y
+            );
+        } else {
+            return new Coordinates(x, y);
+        }
     }
 
     public ViewPlane rotateAround(VectorRotator rotator, double degrees) {
+        if (flipped) {
+            degrees *= -1.00;
+        }
         return new ViewPlane(
                 normalVector.rotateAround(rotator, degrees).toUnitVector(),
-                centerPoint.rotateAround(rotator, degrees)
+                centerPoint.rotateAround(rotator, degrees),
+                flipped
         );
     }
 
@@ -98,6 +115,15 @@ public class ViewPlane {
     }
 
     public String toString() {
-        return "[v="+normalVector + ", p=" + centerPoint+"]";
+        return "[v=" + normalVector + ", p=" + centerPoint + "]";
+    }
+
+    public ViewPlane flip() {
+        flipped = !flipped;
+        return new ViewPlane(
+                vector(normalVector.x(), normalVector.y(), normalVector.z() * -1.00).toUnitVector(),
+                vector(centerPoint.x(), centerPoint.y(), centerPoint.z() * -1.00),
+                flipped
+        );
     }
 }

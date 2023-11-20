@@ -34,6 +34,10 @@ public class Square {
         normalDirection = v;
     }
 
+    public Vector3D[] getCorners() {
+        return corners;
+    }
+
     public void setCorners(Vector3D[] corners) {
         this.corners = corners;
     }

@@ -1,10 +1,15 @@
 package maths.coordinate.vector.rotator;
 
+import maths.coordinate.vector.UnitVector3D;
 import maths.coordinate.vector.Vector3D;
+
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static java.lang.Math.*;
 import static maths.coordinate.vector.Vector3D.vector;
-import static utilities.UnitVectors.Z_POSITIVE;
+import static utilities.UnitVectors.*;
 
 public enum VectorRotator {
     X_AXIS {
@@ -61,6 +66,28 @@ public enum VectorRotator {
             );
         }
     };
+
+
+    private static final Map<UnitVector3D, VectorRotator> ROTATOR_MAP = Map.of(
+            X_POSITIVE, X_AXIS,
+            X_NEGATIVE, X_AXIS,
+            Y_POSITIVE, Y_AXIS,
+            Y_NEGATIVE, Y_AXIS,
+            Z_POSITIVE, Z_AXIS,
+            Z_NEGATIVE, Z_AXIS
+    );
+
+    public static VectorRotator of(UnitVector3D axis) {
+        VectorRotator mapResult = ROTATOR_MAP.get(axis);
+        if (mapResult != null) {
+            return mapResult;
+        }
+
+        return ROTATOR_MAP.keySet().stream()
+                .reduce((v1, v2) -> v1.subtract(axis).abs() > v2.subtract(axis).abs() ? v2 : v1)
+                .map(closestVector -> ROTATOR_MAP.get(closestVector))
+                .orElseThrow(NoSuchElementException::new);
+    }
 
     public Vector3D rotate(Vector3D v, double degrees) {
         double radians = toRadians(degrees);

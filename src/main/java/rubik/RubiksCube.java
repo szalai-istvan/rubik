@@ -4,6 +4,7 @@ import maths.coordinate.plane.ViewPlane;
 import maths.coordinate.vector.UnitVector3D;
 import maths.coordinate.vector.Vector3D;
 import maths.geometry.Cube;
+import maths.geometry.cuberotator.AnimatedCubeRotator;
 import maths.geometry.cuberotator.CubeStepper;
 import ui.renderer.RenderingTask;
 import ui.renderer.SelectedCubeRendererTask;
@@ -12,15 +13,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static maths.coordinate.vector.Vector3D.vector;
+import static utilities.Constants.ROTATION_UNIT;
 import static utilities.UnitVectors.Z_NEGATIVE;
 import static utilities.UnitVectors.Z_POSITIVE;
 
 public class RubiksCube {
-    Set<Cube> cubes = new HashSet<>();
-    private UnitVector3D selectedDirection;
+    protected Set<Cube> cubes = new HashSet<>();
 
-    private Set<Cube> selectedCubes = new HashSet<>();
+    private UnitVector3D selectedDirection;
     private Vector3D verticalShiftBackupVector;
+    protected Set<Cube> selectedCubes = new HashSet<>();
+    private Set<Cube> notSelectedCubes = new HashSet<>();
 
     public RubiksCube() {
         RubiksCubeBuilder.of(this)
@@ -51,6 +54,9 @@ public class RubiksCube {
         selectedDirection = v.toUnitVector();
         selectedCubes = cubes.stream()
                 .filter(cube -> cube.getMidPoint().scalarMultiply(v) > 1E-10)
+                .collect(Collectors.toSet());
+        notSelectedCubes = cubes.stream()
+                .filter(cube -> !selectedCubes.contains(cube))
                 .collect(Collectors.toSet());
     }
 
@@ -86,15 +92,38 @@ public class RubiksCube {
         }
     }
 
-    public void rotateSelectedLeft() {
-        rotateSelected(-1.00);
+    public void stepSelectedLeft() {
+        stepSelected(-1.00);
     }
 
-    public void rotateSelectedRight() {
-        rotateSelected(1.00);
+    public void stepSelectedRight() {
+        stepSelected(1.00);
     }
 
-    private void rotateSelected(double angle) {
+    public List<TempCube> animateSelectedLeft() {
+        return createAnimationSteps(15);
+    }
+
+    public List<TempCube> animateSelectedRight() {
+        return createAnimationSteps(-15);
+    }
+
+    private List<TempCube> createAnimationSteps(int stepSize) {
+        List<TempCube> animationSteps = new ArrayList<>();
+        RubiksCube previous = this;
+        int absoluteStep = Math.abs(stepSize);
+        for (int angle = 0; angle < 90; angle += absoluteStep) {
+            Set<Cube> rotatedCubes = new AnimatedCubeRotator(previous.selectedCubes, selectedDirection, stepSize)
+                    .rotateCubes();
+            TempCube tempCube = new TempCube(rotatedCubes, notSelectedCubes);
+            tempCube.select(selectedDirection);
+            previous = tempCube;
+            animationSteps.add(tempCube);
+        }
+        return animationSteps;
+    }
+
+    private void stepSelected(double angle) {
         Set<Cube> rotatedCubes = new CubeStepper(selectedCubes, selectedDirection, angle)
                 .rotateCubes();
         replaceCubesWith(rotatedCubes);
