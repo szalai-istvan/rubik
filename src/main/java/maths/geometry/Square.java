@@ -26,6 +26,10 @@ public class Square {
         this.color = c;
     }
 
+    public Vector3D getNormalDirection() {
+        return normalDirection;
+    }
+
     public void setNormalDirection(Vector3D v) {
         normalDirection = v;
     }

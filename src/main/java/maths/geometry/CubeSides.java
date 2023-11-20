@@ -5,6 +5,7 @@ import maths.coordinate.plane.ViewPlane;
 import ui.renderer.RenderingTask;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,10 @@ public class CubeSides {
         return setSide(Z_NEGATIVE, color);
     }
 
+    public List<Square> squares() {
+        return new ArrayList<>(sides.values());
+    }
+
     List<RenderingTask> getRenderingTasks(ViewPlane viewPlane) {
         return sides.values().stream()
                 .filter(square -> square.isLookingAt(viewPlane))
@@ -67,7 +72,7 @@ public class CubeSides {
                 .collect(toList());
     }
 
-    private CubeSides setSide(Vector3D vector, Color color) {
+    public CubeSides setSide(Vector3D vector, Color color) {
         Square square = new Square(color);
         square.setNormalDirection(vector);
         Vector3D[] corners = calculateCornerPoints(vector);

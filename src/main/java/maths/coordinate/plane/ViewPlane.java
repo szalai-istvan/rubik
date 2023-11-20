@@ -3,7 +3,7 @@ package maths.coordinate.plane;
 import maths.coordinate.Coordinates;
 import maths.coordinate.vector.UnitVector3D;
 import maths.coordinate.vector.Vector3D;
-import maths.coordinate.vector.rotator.Rotator;
+import maths.coordinate.vector.rotator.VectorRotator;
 import maths.geometry.Cube;
 
 import static maths.coordinate.vector.Vector3D.vector;
@@ -61,7 +61,7 @@ public class ViewPlane {
         return new Coordinates(x, y);
     }
 
-    public ViewPlane rotateAround(Rotator rotator, double degrees) {
+    public ViewPlane rotateAround(VectorRotator rotator, double degrees) {
         return new ViewPlane(
                 normalVector.rotateAround(rotator, degrees).toUnitVector(),
                 centerPoint.rotateAround(rotator, degrees)

@@ -1,6 +1,8 @@
 package ui;
 
+import ui.eventhandlers.CubeScrambler;
 import ui.eventhandlers.RotationListener;
+import ui.eventhandlers.ShiftListener;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -50,6 +52,16 @@ public class WindowSetupTool {
     @SetupMethod
     public void addRotation() {
         window.addMouseMotionListener(new RotationListener(window));
+    }
+
+    @SetupMethod
+    public void addShiftListener() {
+        window.addKeyListener(new ShiftListener(window));
+    }
+
+    @SetupMethod
+    public void addCubeScrambler() {
+        window.addKeyListener(new CubeScrambler(window));
     }
 
     private boolean isSetupMethod(Method method) {

@@ -1,6 +1,6 @@
 package maths.coordinate.vector;
 
-import maths.coordinate.vector.rotator.Rotator;
+import maths.coordinate.vector.rotator.VectorRotator;
 
 public class Vector3D {
     private final double x;
@@ -84,7 +84,7 @@ public class Vector3D {
         return new UnitVector3D(divide.x, divide.y, divide.z);
     }
 
-    public Vector3D rotateAround(Rotator rotator, double degrees) {
+    public Vector3D rotateAround(VectorRotator rotator, double degrees) {
         return rotator.rotate(this, degrees);
     }
 
@@ -92,6 +92,15 @@ public class Vector3D {
         return Math.sqrt((point.x - x) * (point.x - x) +
                 (point.y - y) * (point.y - y) +
                 (point.z - z) * (point.z - z));
+    }
+
+    public boolean isTheSameDirectionAs(Vector3D v) {
+        return this.isParallelTo(v) &&
+                this.scalarMultiply(v) > 0.00;
+    }
+
+    public boolean isParallelTo(Vector3D v) {
+        return this.multiply(v).abs() < 1E-10;
     }
 
     @Override

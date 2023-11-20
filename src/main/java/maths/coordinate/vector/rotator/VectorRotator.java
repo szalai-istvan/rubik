@@ -6,7 +6,7 @@ import static java.lang.Math.*;
 import static maths.coordinate.vector.Vector3D.vector;
 import static utilities.UnitVectors.Z_POSITIVE;
 
-public enum Rotator {
+public enum VectorRotator {
     X_AXIS {
         @Override
         protected Vector3D performRotation(Vector3D v, double radians) {
