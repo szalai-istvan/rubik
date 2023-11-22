@@ -1,6 +1,7 @@
 package ui;
 
 import maths.coordinate.plane.ViewPlane;
+import maths.coordinate.vector.Vector3D;
 import rubik.RubiksCube;
 import rubik.TempCube;
 import ui.renderer.RubiksCubeRenderer;
@@ -17,13 +18,17 @@ import static utilities.Constants.ROTATION_UNIT;
 import static utilities.UnitVectors.randomUnitVector;
 
 public class Window extends JFrame {
-    private RubiksCube rubiksCube = new RubiksCube();
+    RubiksCube rubiksCube = new RubiksCube();
     private ViewPlane view = new ViewPlane(unitVector(1, 1, 1), 400L);
     final JPanel canvas = new JPanel();
 
     public Window() {
         WindowSetupTool.of(this).setup();
         render();
+    }
+
+    public ViewPlane getView() {
+        return view;
     }
 
     public void flip() {
@@ -48,6 +53,11 @@ public class Window extends JFrame {
 
     public void rotateDown() {
         view = view.rotateAround(HORIZONTAL_PERPENDICULAR_AXIS, -ROTATION_UNIT);
+        render();
+    }
+
+    public void selectFace(Vector3D vector) {
+        rubiksCube.select(vector);
         render();
     }
 

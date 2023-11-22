@@ -9,15 +9,15 @@ import java.awt.event.MouseMotionListener;
 import static utilities.Constants.SCREEN_HEIGHT;
 import static utilities.Constants.SCREEN_WIDTH;
 
-public class RotationListener implements MouseMotionListener  {
-    private static final int CENTER_X = SCREEN_WIDTH / 2;
-    private static final int CENTER_Y = SCREEN_HEIGHT / 2;
+public class ViewRotationListener implements MouseMotionListener  {
+    private int nullPointX = SCREEN_WIDTH / 2;
+    private int nullPointY = SCREEN_HEIGHT / 2;
 
     private final Window window;
 
-    public RotationListener(Window window) {
+    public ViewRotationListener(Window window) {
         this.window = window;
-        recenterMouse();
+        recalculateNullpoints();
     }
 
     @Override
@@ -27,29 +27,27 @@ public class RotationListener implements MouseMotionListener  {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        int x = e.getX() - CENTER_X;
-        int y = e.getY() - CENTER_Y;
+        int x = e.getX() - nullPointX;
+        int y = e.getY() - nullPointY;
 
         if (x > 10.00) {
             window.rotateRight();
-            recenterMouse();
+            recalculateNullpoints();
         } else if (x < -10.00) {
             window.rotateLeft();
-            recenterMouse();
+            recalculateNullpoints();
         } else if (y > 10.00) {
             window.rotateDown();
-            recenterMouse();
+            recalculateNullpoints();
         } else if (y < -10.00) {
             window.rotateUp();
-            recenterMouse();
+            recalculateNullpoints();
         }
     }
 
-    private void recenterMouse() {
-        try {
-            new Robot().mouseMove(CENTER_X, CENTER_Y);
-        } catch (AWTException e) {
-            throw new RuntimeException(e);
-        }
+    private void recalculateNullpoints() {
+        Point location = MouseInfo.getPointerInfo().getLocation();
+        nullPointX = location.x;
+        nullPointY = location.y;
     }
 }

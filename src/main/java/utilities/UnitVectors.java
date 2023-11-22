@@ -17,7 +17,7 @@ public class UnitVectors {
     public static final UnitVector3D Z_POSITIVE = unitVector(0, 0, 1);
     public static final UnitVector3D Z_NEGATIVE = unitVector(0, 0, -1);
 
-    private static final List<UnitVector3D> UNIT_VECTORS = List.of(X_POSITIVE, X_NEGATIVE, Y_POSITIVE, Y_NEGATIVE, Z_POSITIVE, Z_NEGATIVE);
+    public static final List<UnitVector3D> UNIT_VECTORS = List.of(X_POSITIVE, X_NEGATIVE, Y_POSITIVE, Y_NEGATIVE, Z_POSITIVE, Z_NEGATIVE);
     private static final Random RANDOM = new Random();
 
     public static UnitVector3D randomUnitVector() {

@@ -1,12 +1,7 @@
 package ui;
 
-import ui.eventhandlers.CubeScrambler;
-import ui.eventhandlers.FlipListener;
-import ui.eventhandlers.RotationListener;
-import ui.eventhandlers.ShiftListener;
+import ui.eventhandlers.*;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
@@ -51,8 +46,8 @@ public class WindowSetupTool {
     }
 
     @SetupMethod
-    public void addRotation() {
-        window.addMouseMotionListener(new RotationListener(window));
+    public void addViewRotation() {
+        window.addMouseListener(new ViewRotationToggle(window));
     }
 
     @SetupMethod
@@ -67,7 +62,18 @@ public class WindowSetupTool {
 
     @SetupMethod
     public void addFlipListener() {
+        window.addMouseListener(new MouseFlipListener(window));
         window.addKeyListener(new FlipListener(window));
+    }
+
+    @SetupMethod
+    public void addScrollListener() {
+        window.addMouseWheelListener(new ScrollRotateListener(window));
+    }
+
+    @SetupMethod
+    public void allowMouseSelection() {
+        window.addMouseListener(new FaceSelectionListener(window));
     }
 
     private boolean isSetupMethod(Method method) {

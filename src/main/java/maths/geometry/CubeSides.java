@@ -93,7 +93,10 @@ public class CubeSides {
     }
 
     protected Vector3D[] calculateCornerPoints(Square square) {
-        Vector3D v = square.getNormalDirection();
+        return new CornerCalculator<>(Square::getNormalDirection)
+                .midpoint(cube.midPoint)
+                .calculateCornerPoints(square);
+        /*Vector3D v = square.getNormalDirection();
         int[] x = toStepArray(v.x());
         int[] y = toStepArray(v.y());
         int[] z = toStepArray(v.z());
@@ -112,7 +115,7 @@ public class CubeSides {
             }
         }
 
-        return corners;
+        return corners;*/
     }
 
     private int[] toStepArray(double x) {
