@@ -26,7 +26,6 @@ public class RubiksCube {
 
     public RubiksCube() {
         RubiksCubeBuilder.of(this).build();
-
         select(vector(1, 0, 0));
     }
 
