@@ -1,6 +1,6 @@
 package rubik;
 
-import maths.geometry.Cube;
+import maths.geometry.cube.Cube;
 
 import java.util.HashSet;
 import java.util.Set;

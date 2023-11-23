@@ -1,10 +1,9 @@
-package maths.geometry;
+package maths.geometry.cube.sides;
 
 import maths.coordinate.vector.Vector3D;
+import maths.geometry.cube.Cube;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 
 public class RandomDirectionCubeSides extends CubeSides {
 

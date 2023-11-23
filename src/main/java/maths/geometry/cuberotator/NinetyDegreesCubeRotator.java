@@ -2,16 +2,18 @@ package maths.geometry.cuberotator;
 
 import maths.coordinate.vector.UnitVector3D;
 import maths.coordinate.vector.Vector3D;
-import maths.geometry.Cube;
-import maths.geometry.CubeSides;
+import maths.geometry.cube.Cube;
+import maths.geometry.cube.sides.CubeSides;
 
 import java.util.Collection;
 
 import static java.lang.Math.signum;
+import static maths.coordinate.vector.Vector3D.vector;
+import static utilities.UnitVectors.*;
 
-public class CubeStepper extends CubeRotator {
+public class NinetyDegreesCubeRotator extends CubeRotator {
 
-    public CubeStepper(Collection<Cube> cubes, UnitVector3D axis, double angle) {
+    public NinetyDegreesCubeRotator(Collection<Cube> cubes, UnitVector3D axis, double angle) {
         super(cubes, axis, angle);
     }
 
@@ -38,6 +40,17 @@ public class CubeStepper extends CubeRotator {
         return rotatePoint(filteredPoint)
                 .plus(cube.getMidPoint())
                 .subtract(filteredPoint);
+    }
+
+    private Vector3D filterVector(Vector3D v) {
+        if (axis.isParallelTo(X_POSITIVE)) {
+            return vector(0, v.y(), v.z());
+        } else if (axis.isParallelTo(Y_NEGATIVE)) {
+            return vector(v.x(), 0, v.z());
+        } else if (axis.isParallelTo(Z_POSITIVE)) {
+            return vector(v.x(), v.y(), 0);
+        }
+        return v;
     }
 
     private Vector3D rotatePoint(Vector3D point) {

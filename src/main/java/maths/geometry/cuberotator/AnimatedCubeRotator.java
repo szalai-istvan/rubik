@@ -2,11 +2,12 @@ package maths.geometry.cuberotator;
 
 import maths.coordinate.vector.UnitVector3D;
 import maths.coordinate.vector.Vector3D;
+import maths.coordinate.vector.rotator.BasicVectorRotator;
 import maths.coordinate.vector.rotator.VectorRotator;
-import maths.geometry.Cube;
-import maths.geometry.CubeSides;
-import maths.geometry.RandomDirectionCubeSides;
-import maths.geometry.Square;
+import maths.geometry.cube.Cube;
+import maths.geometry.cube.sides.CubeSides;
+import maths.geometry.cube.sides.RandomDirectionCubeSides;
+import maths.geometry.cube.sides.Square;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,14 +21,8 @@ public class AnimatedCubeRotator extends CubeRotator {
 
     public AnimatedCubeRotator(Collection<Cube> cubes, UnitVector3D axis, double angle) {
         super(cubes, axis, angle);
-        vectorRotator = VectorRotator.of(axis);
+        vectorRotator = BasicVectorRotator.of(axis);
         revertAngleIfNegativeDirection();
-    }
-
-    private void revertAngleIfNegativeDirection() {
-        if (axis.x() + axis.y() + axis.z() < 0) {
-            angle *= -1;
-        }
     }
 
     @Override
@@ -40,7 +35,7 @@ public class AnimatedCubeRotator extends CubeRotator {
 
     private CubeSides rotateSquares(Cube cube, Cube nextCube) {
         List<Square> squares = cube.sides().squares().stream()
-                .map(s -> rotateSquare(s))
+                .map(this::rotateSquare)
                 .collect(toList());
 
         return new RandomDirectionCubeSides(nextCube, squares);
@@ -60,5 +55,11 @@ public class AnimatedCubeRotator extends CubeRotator {
         return Arrays.stream(corners)
                 .map(corner -> corner.rotateAround(vectorRotator, angle))
                 .collect(toList()).toArray(new Vector3D[corners.length]);
+    }
+
+    private void revertAngleIfNegativeDirection() {
+        if (axis.x() + axis.y() + axis.z() < 0) {
+            angle *= -1;
+        }
     }
 }

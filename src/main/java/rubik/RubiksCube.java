@@ -3,9 +3,9 @@ package rubik;
 import maths.coordinate.plane.ViewPlane;
 import maths.coordinate.vector.UnitVector3D;
 import maths.coordinate.vector.Vector3D;
-import maths.geometry.Cube;
+import maths.geometry.cube.Cube;
 import maths.geometry.cuberotator.AnimatedCubeRotator;
-import maths.geometry.cuberotator.CubeStepper;
+import maths.geometry.cuberotator.NinetyDegreesCubeRotator;
 import ui.renderer.RenderingTask;
 import ui.renderer.SelectedCubeRendererTask;
 
@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static maths.coordinate.vector.Vector3D.vector;
-import static utilities.Constants.ROTATION_UNIT;
 import static utilities.UnitVectors.Z_NEGATIVE;
 import static utilities.UnitVectors.Z_POSITIVE;
 
@@ -21,18 +20,12 @@ public class RubiksCube {
     protected Set<Cube> cubes = new HashSet<>();
 
     private UnitVector3D selectedDirection;
-    private Vector3D verticalShiftBackupVector;
+    private Vector3D backupSelectedVector;
     protected Set<Cube> selectedCubes = new HashSet<>();
     private Set<Cube> notSelectedCubes = new HashSet<>();
 
     public RubiksCube() {
-        RubiksCubeBuilder.of(this)
-                .buildRedSide()
-                .buildWhiteSide()
-                .buildGreenSide()
-                .buildOrangeSide()
-                .buildYellowSide()
-                .buildBlueSide();
+        RubiksCubeBuilder.of(this).build();
 
         select(vector(1, 0, 0));
     }
@@ -51,6 +44,7 @@ public class RubiksCube {
     }
 
     public void select(Vector3D v) {
+        backupSelectedVector = selectedDirection;
         selectedDirection = v.toUnitVector();
         selectedCubes = cubes.stream()
                 .filter(cube -> cube.getMidPoint().scalarMultiply(v) > 1E-10)
@@ -76,28 +70,34 @@ public class RubiksCube {
 
     public void shiftUp() {
         if (selectedDirection.isParallelTo(Z_POSITIVE)) {
-            select(verticalShiftBackupVector);
+            if (selectedDirection.scalarMultiply(Z_POSITIVE) > 0.00) {
+                select(backupSelectedVector.multiply(-1.00));
+            } else {
+                select(backupSelectedVector);
+            }
         } else {
-            verticalShiftBackupVector = selectedDirection;
             select(Z_POSITIVE);
         }
     }
 
     public void shiftDown() {
         if (selectedDirection.isParallelTo(Z_POSITIVE)) {
-            select(verticalShiftBackupVector);
+            if (selectedDirection.scalarMultiply(Z_NEGATIVE) > 0.00) {
+                select(backupSelectedVector.multiply(-1.00));
+            } else {
+                select(backupSelectedVector);
+            }
         } else {
-            verticalShiftBackupVector = selectedDirection;
             select(Z_NEGATIVE);
         }
     }
 
-    public void stepSelectedLeft() {
-        stepSelected(-1.00);
+    public void rotateSelectedLeft() {
+        rotateSelected(-1.00);
     }
 
-    public void stepSelectedRight() {
-        stepSelected(1.00);
+    public void rotateSelectedRight() {
+        rotateSelected(1.00);
     }
 
     public List<TempCube> animateSelectedLeft() {
@@ -123,8 +123,8 @@ public class RubiksCube {
         return animationSteps;
     }
 
-    private void stepSelected(double angle) {
-        Set<Cube> rotatedCubes = new CubeStepper(selectedCubes, selectedDirection, angle)
+    private void rotateSelected(double angle) {
+        Set<Cube> rotatedCubes = new NinetyDegreesCubeRotator(selectedCubes, selectedDirection, angle)
                 .rotateCubes();
         replaceCubesWith(rotatedCubes);
         selectedCubes = rotatedCubes;

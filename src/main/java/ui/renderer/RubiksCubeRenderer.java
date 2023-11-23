@@ -47,16 +47,25 @@ public class RubiksCubeRenderer {
                 .stream()
                 .map(task -> task.withViewPlane(viewPlane))
                 .forEach(task -> task.render(graphics));
+
         Graphics targetGraphics = target.getGraphics();
         targetGraphics.drawImage(image, 0, 0, null);
+
         graphics.dispose();
         targetGraphics.dispose();
     }
 
     private void prepare(Graphics graphics) {
+        fillWithBlack(graphics);
+        drawWhiteCircleInCenter(graphics);
+    }
+
+    private void fillWithBlack(Graphics graphics) {
         graphics.setColor(BLACK);
         graphics.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
 
+    private void drawWhiteCircleInCenter(Graphics graphics) {
         int shade = 0;
         int dOffset = 0;
         while (shade < 192) {

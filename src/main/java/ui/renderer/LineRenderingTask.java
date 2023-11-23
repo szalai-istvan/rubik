@@ -7,10 +7,6 @@ import static java.awt.Color.*;
 
 public class LineRenderingTask extends RenderingTask<Line2D> {
 
-    public LineRenderingTask(Color color, Line2D shape) {
-        super(color, shape);
-    }
-
     public LineRenderingTask(Line2D shape) {
         super(BLACK, shape);
     }
@@ -19,7 +15,7 @@ public class LineRenderingTask extends RenderingTask<Line2D> {
     protected void beforeRender(Graphics g) {
         super.beforeRender(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(10));
+        g2d.setStroke(new BasicStroke(6));
     }
 
     @Override

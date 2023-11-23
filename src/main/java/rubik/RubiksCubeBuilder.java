@@ -2,11 +2,10 @@ package rubik;
 
 import maths.coordinate.vector.UnitVector3D;
 import maths.coordinate.vector.Vector3D;
-import maths.geometry.Cube;
-import maths.geometry.CubeSides;
+import maths.geometry.cube.Cube;
+import maths.geometry.cube.sides.CubeSides;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -18,12 +17,12 @@ import static utilities.UnitVectors.*;
 
 public class RubiksCubeBuilder {
     Map<Vector3D, Color> COLOR_DIRECTIONS = Map.of(
-            X_POSITIVE, RED,
-            Y_POSITIVE, GREEN,
-            Z_POSITIVE, WHITE,
-            X_NEGATIVE, new Color(242, 140, 40),
-            Y_NEGATIVE, BLUE,
-            Z_NEGATIVE, YELLOW
+            X_POSITIVE, RED.darker(),
+            Y_POSITIVE, GREEN.darker(),
+            Z_POSITIVE, WHITE.darker(),
+            X_NEGATIVE, new Color(242, 140, 40).darker(),
+            Y_NEGATIVE, BLUE.darker(),
+            Z_NEGATIVE, YELLOW.darker()
     );
 
     private final RubiksCube rubiksCube;
@@ -61,37 +60,37 @@ public class RubiksCubeBuilder {
                 .rubiksCube;
     }
 
-    RubiksCubeBuilder buildRedSide() {
+    private RubiksCubeBuilder buildRedSide() {
         UnitVector3D unitVector = X_POSITIVE;
         Color color = COLOR_DIRECTIONS.get(unitVector);
         return buildSide(unitVector, sides -> sides.setXPositive(color));
     }
 
-    RubiksCubeBuilder buildOrangeSide() {
+    private RubiksCubeBuilder buildOrangeSide() {
         UnitVector3D unitVector = X_NEGATIVE;
         Color color = COLOR_DIRECTIONS.get(unitVector);
         return buildSide(unitVector, sides -> sides.setXNegative(color));
     }
 
-    RubiksCubeBuilder buildWhiteSide() {
+    private RubiksCubeBuilder buildWhiteSide() {
         UnitVector3D unitVector = Z_POSITIVE;
         Color color = COLOR_DIRECTIONS.get(unitVector);
         return buildSide(unitVector, sides -> sides.setZPositive(color));
     }
 
-    RubiksCubeBuilder buildYellowSide() {
+    private RubiksCubeBuilder buildYellowSide() {
         UnitVector3D unitVector = Z_NEGATIVE;
         Color color = COLOR_DIRECTIONS.get(unitVector);
         return buildSide(unitVector, sides -> sides.setZNegative(color));
     }
 
-    RubiksCubeBuilder buildGreenSide() {
+    private RubiksCubeBuilder buildGreenSide() {
         UnitVector3D unitVector = Y_POSITIVE;
         Color color = COLOR_DIRECTIONS.get(unitVector);
         return buildSide(unitVector, sides -> sides.setYPositive(color));
     }
 
-    RubiksCubeBuilder buildBlueSide() {
+    private RubiksCubeBuilder buildBlueSide() {
         UnitVector3D unitVector = Y_NEGATIVE;
         Color color = COLOR_DIRECTIONS.get(unitVector);
         return buildSide(unitVector, sides -> sides.setYNegative(color));

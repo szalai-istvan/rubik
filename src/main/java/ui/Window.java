@@ -2,6 +2,7 @@ package ui;
 
 import maths.coordinate.plane.ViewPlane;
 import maths.coordinate.vector.Vector3D;
+import maths.coordinate.vector.rotator.HorizontalPerpendicularAxisRotator;
 import rubik.RubiksCube;
 import rubik.TempCube;
 import ui.renderer.RubiksCubeRenderer;
@@ -12,8 +13,7 @@ import java.util.List;
 
 import static java.util.stream.IntStream.range;
 import static maths.coordinate.vector.UnitVector3D.unitVector;
-import static maths.coordinate.vector.rotator.VectorRotator.HORIZONTAL_PERPENDICULAR_AXIS;
-import static maths.coordinate.vector.rotator.VectorRotator.Z_AXIS;
+import static maths.coordinate.vector.rotator.BasicVectorRotator.Z_AXIS;
 import static utilities.Constants.ROTATION_UNIT;
 import static utilities.UnitVectors.randomUnitVector;
 
@@ -36,23 +36,23 @@ public class Window extends JFrame {
         render();
     }
 
-    public void rotateLeft() {
+    public void rotateViewLeft() {
         view = view.rotateAround(Z_AXIS, ROTATION_UNIT);
         render();
     }
 
-    public void rotateRight() {
+    public void rotateViewRight() {
         view = view.rotateAround(Z_AXIS, -ROTATION_UNIT);
         render();
     }
 
-    public void rotateUp() {
-        view = view.rotateAround(HORIZONTAL_PERPENDICULAR_AXIS, ROTATION_UNIT);
+    public void rotateViewUp() {
+        view = view.rotateAround(new HorizontalPerpendicularAxisRotator(), ROTATION_UNIT);
         render();
     }
 
-    public void rotateDown() {
-        view = view.rotateAround(HORIZONTAL_PERPENDICULAR_AXIS, -ROTATION_UNIT);
+    public void rotateViewDown() {
+        view = view.rotateAround(new HorizontalPerpendicularAxisRotator(), -ROTATION_UNIT);
         render();
     }
 
@@ -61,46 +61,44 @@ public class Window extends JFrame {
         render();
     }
 
-    public void shiftLeft() {
-        rubiksCube.shiftLeft();
+    public void shiftSelectedFaceLeft() {
+        view.rubiksCubeShifter().shiftSelectedFaceLeft(rubiksCube);
         render();
     }
 
-    public void shiftRight() {
-        rubiksCube.shiftRight();
+    public void shiftSelectedFaceRight() {
+        view.rubiksCubeShifter().shiftSelectedFaceRight(rubiksCube);
         render();
     }
 
-    public void shiftUp() {
-        rubiksCube.shiftUp();
+    public void shiftSelectedFaceUp() {
+        view.rubiksCubeShifter().shiftSelectedFaceUp(rubiksCube);
         render();
     }
 
-    public void shiftDown() {
-        rubiksCube.shiftDown();
+    public void shiftSelectedFaceDown() {
+        view.rubiksCubeShifter().shiftSelectedFaceDown(rubiksCube);
         render();
     }
 
     public void rotateSelectedFaceLeft() {
-        rubiksCube.stepSelectedLeft();
-        render();
+        List<TempCube> animationSteps = rubiksCube.animateSelectedLeft();
+        renderAnimationSteps(animationSteps);
+        rubiksCube.rotateSelectedLeft();
     }
 
     public void rotateSelectedFaceRight() {
-        rubiksCube.stepSelectedRight();
-        render();
-    }
-
-    public void rotateSelectedFaceLeftWithAnimation() {
-        List<TempCube> animationSteps = rubiksCube.animateSelectedLeft();
-        renderAnimationSteps(animationSteps);
-        rubiksCube.stepSelectedLeft();
-    }
-
-    public void rotateSelectedFaceRightWithAnimation() {
         List<TempCube> animationSteps = rubiksCube.animateSelectedRight();
         renderAnimationSteps(animationSteps);
-        rubiksCube.stepSelectedRight();
+        rubiksCube.rotateSelectedRight();
+    }
+
+    public void scramble() {
+        range(0, 40).forEach(i -> {
+            rubiksCube.select(randomUnitVector());
+            rubiksCube.rotateSelectedRight();
+        });
+        render();
     }
 
     private void renderAnimationSteps(List<TempCube> animationSteps) {
@@ -113,7 +111,7 @@ public class Window extends JFrame {
     }
 
     private void render() {
-        new Thread(() -> performRendering()).start();
+        new Thread(this::performRendering).start();
     }
 
     private void performRendering() {
@@ -126,14 +124,5 @@ public class Window extends JFrame {
                 .on(view)
                 .useTarget(canvas)
                 .render();
-    }
-
-    public void scramble() {
-        range(0, 40)
-                .forEach(i -> {
-                    rubiksCube.select(randomUnitVector());
-                    rubiksCube.stepSelectedRight();
-                });
-        render();
     }
 }

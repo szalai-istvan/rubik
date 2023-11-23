@@ -1,7 +1,8 @@
-package maths.geometry;
+package maths.geometry.cube;
 
 import maths.coordinate.vector.Vector3D;
 import maths.coordinate.plane.ViewPlane;
+import maths.geometry.cube.sides.CubeSides;
 import ui.renderer.RenderingTask;
 
 import java.util.List;

@@ -40,7 +40,7 @@ public class FaceSelectionListener extends MouseAdapter {
                 .filter(vector -> vector.scalarMultiply(viewDirection) > 0.00)
                 .filter(vector -> createPolygon(vector).contains(locationOnScreen))
                 .findFirst()
-                .ifPresent(vector -> window.selectFace(vector));
+                .ifPresent(window::selectFace);
     }
 
     private Polygon createPolygon(UnitVector3D vector) {

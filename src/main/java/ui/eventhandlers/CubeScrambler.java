@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 public class CubeScrambler extends KeyAdapter {
     private static final Map<Character, Consumer<Window>> OP = Map.of(
             'X', window -> window.scramble()
-
     );
 
     private final Window window;

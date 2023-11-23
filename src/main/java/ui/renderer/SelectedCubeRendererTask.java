@@ -1,8 +1,8 @@
 package ui.renderer;
 
 import maths.coordinate.plane.ViewPlane;
-import maths.geometry.Cube;
-import maths.geometry.Square;
+import maths.geometry.cube.Cube;
+import maths.geometry.cube.sides.Square;
 
 import java.awt.*;
 import java.util.List;

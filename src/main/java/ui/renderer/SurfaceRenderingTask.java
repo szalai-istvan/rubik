@@ -1,6 +1,6 @@
 package ui.renderer;
 
-import maths.geometry.Square;
+import maths.geometry.cube.sides.Square;
 
 import java.awt.*;
 
@@ -28,7 +28,7 @@ public class SurfaceRenderingTask extends RenderingTask<Polygon> {
         int green = color.getGreen();
         int blue = color.getBlue();
         double cosAlpha = square.cosAlpha(viewPlane);
-        double multiplier = 1 - (1 - cosAlpha) / 2;
+        double multiplier = 1 - (1 - cosAlpha) / 1.5;
         return new Color(
                 (int) (red * multiplier),
                 (int) (green * multiplier),

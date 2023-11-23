@@ -1,4 +1,4 @@
-package maths.geometry;
+package maths.geometry.cube.sides;
 
 import maths.coordinate.Coordinates;
 import maths.coordinate.vector.Vector3D;
@@ -20,7 +20,7 @@ import static java.awt.Color.BLACK;
 public class Square {
     private Vector3D[] corners;
     private Vector3D normalDirection;
-    private Color color = BLACK;
+    private final Color color;
 
     public Square(Color c) {
         this.color = c;
@@ -53,6 +53,21 @@ public class Square {
         return renderingTasks;
     }
 
+    public Polygon toPolygon(Coordinates[] projectedCorners) {
+        return new Polygon(
+                xPoints(projectedCorners),
+                yPoints(projectedCorners),
+                projectedCorners.length);
+    }
+
+    public double cosAlpha(ViewPlane viewPlane) {
+        return normalDirection.cosAlpha(viewPlane.getNormalVector());
+    }
+
+    boolean isLookingAt(ViewPlane viewPlane) {
+        return normalDirection.scalarMultiply(viewPlane.getNormalVector()) > 0.00;
+    }
+
     private Coordinates[] calculateProjectedCorners(ViewPlane viewPlane) {
         return Arrays.stream(corners)
                 .map(vector -> viewPlane.projectPointToPlane(vector))
@@ -80,28 +95,12 @@ public class Square {
     private RenderingTask getSurfaceRenderingTask(Coordinates[] projectedCorners) {
         return new SurfaceRenderingTask(color, toPolygon(projectedCorners), this);
     }
-
-    public Polygon toPolygon(Coordinates[] projectedCorners) {
-        return new Polygon(
-                xPoints(projectedCorners),
-                yPoints(projectedCorners),
-                projectedCorners.length);
-    }
-
-    public boolean isLookingAt(ViewPlane viewPlane) {
-        return normalDirection.scalarMultiply(viewPlane.getNormalVector()) > 0.00;
-    }
-
     private int[] xPoints(Coordinates[] projectedCorners) {
         return coordinates(projectedCorners, corner -> (int) corner.x);
     }
 
     private int[] yPoints(Coordinates[] projectedCorners) {
         return coordinates(projectedCorners, corner -> (int) corner.y);
-    }
-
-    public double cosAlpha(ViewPlane viewPlane) {
-        return normalDirection.cosAlpha(viewPlane.getNormalVector());
     }
 
     private int[] coordinates(Coordinates[] projectedCorners, Function<Coordinates, Integer> mapper) {

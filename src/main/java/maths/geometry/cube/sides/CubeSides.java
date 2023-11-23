@@ -1,7 +1,9 @@
-package maths.geometry;
+package maths.geometry.cube.sides;
 
 import maths.coordinate.vector.Vector3D;
 import maths.coordinate.plane.ViewPlane;
+import maths.geometry.CornerCalculator;
+import maths.geometry.cube.Cube;
 import ui.renderer.RenderingTask;
 
 import java.awt.*;
@@ -10,17 +12,17 @@ import java.util.List;
 
 import static java.awt.Color.BLACK;
 import static java.util.stream.Collectors.toList;
-import static maths.coordinate.vector.Vector3D.vector;
-import static utilities.Constants.*;
 import static utilities.UnitVectors.*;
 
 public class CubeSides {
     protected Map<Vector3D, Square> sides;
-
     protected final Cube cube;
+    private final CornerCalculator<Square> cornerCalculator;
 
     public CubeSides(Cube cube, Collection<Square> squares) {
         this.cube = cube;
+        cornerCalculator = new CornerCalculator<>(Square::getNormalDirection)
+                .midpoint(cube.getMidPoint());
         sides = new HashMap<>();
         for (Square s : squares) {
             addSide(s);
@@ -29,6 +31,8 @@ public class CubeSides {
 
     public CubeSides(Cube cube) {
         this.cube = cube;
+        cornerCalculator = new CornerCalculator<>(Square::getNormalDirection)
+                .midpoint(cube.getMidPoint());
         sides = new HashMap<>();
         init();
     }
@@ -71,7 +75,7 @@ public class CubeSides {
         return new ArrayList<>(sides.values());
     }
 
-    List<RenderingTask> getRenderingTasks(ViewPlane viewPlane) {
+    public List<RenderingTask> getRenderingTasks(ViewPlane viewPlane) {
         return sides.values().stream()
                 .filter(square -> square.isLookingAt(viewPlane))
                 .flatMap(square -> square.getRenderingTasks(viewPlane).stream())
@@ -93,39 +97,6 @@ public class CubeSides {
     }
 
     protected Vector3D[] calculateCornerPoints(Square square) {
-        return new CornerCalculator<>(Square::getNormalDirection)
-                .midpoint(cube.midPoint)
-                .calculateCornerPoints(square);
-        /*Vector3D v = square.getNormalDirection();
-        int[] x = toStepArray(v.x());
-        int[] y = toStepArray(v.y());
-        int[] z = toStepArray(v.z());
-
-        Vector3D[] corners = new Vector3D[x.length * y.length * z.length];
-        int index = 0;
-        for (int ix = 0; ix < x.length; ix++) {
-            for (int iy = 0; iy < y.length; iy++) {
-                for (int iz = 0; iz < z.length; iz++) {
-                    corners[INDEX_ORDER[index++]] = vector(
-                            cube.midPoint.x() + x[ix] * HALF_LENGTH,
-                            cube.midPoint.y() + y[iy] * HALF_LENGTH,
-                            cube.midPoint.z() + z[iz] * HALF_LENGTH
-                    );
-                }
-            }
-        }
-
-        return corners;*/
-    }
-
-    private int[] toStepArray(double x) {
-        if (x == 1.00) {
-            return POSITIVE;
-        } else if (x == 0.00) {
-            return POSITIVE_NEGATIVE;
-        } else if (x == -1.00) {
-            return NEGATIVE;
-        }
-        throw new IllegalArgumentException();
+        return cornerCalculator.calculateCornerPoints(square);
     }
 }

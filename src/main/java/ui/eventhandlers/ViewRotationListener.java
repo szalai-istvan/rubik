@@ -4,12 +4,12 @@ import ui.Window;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseMotionAdapter;
 
 import static utilities.Constants.SCREEN_HEIGHT;
 import static utilities.Constants.SCREEN_WIDTH;
 
-public class ViewRotationListener implements MouseMotionListener  {
+public class ViewRotationListener extends MouseMotionAdapter {
     private int nullPointX = SCREEN_WIDTH / 2;
     private int nullPointY = SCREEN_HEIGHT / 2;
 
@@ -21,26 +21,21 @@ public class ViewRotationListener implements MouseMotionListener  {
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-
-    }
-
-    @Override
     public void mouseMoved(MouseEvent e) {
         int x = e.getX() - nullPointX;
         int y = e.getY() - nullPointY;
 
         if (x > 10.00) {
-            window.rotateRight();
+            window.rotateViewRight();
             recalculateNullpoints();
         } else if (x < -10.00) {
-            window.rotateLeft();
+            window.rotateViewLeft();
             recalculateNullpoints();
         } else if (y > 10.00) {
-            window.rotateDown();
+            window.rotateViewDown();
             recalculateNullpoints();
         } else if (y < -10.00) {
-            window.rotateUp();
+            window.rotateViewUp();
             recalculateNullpoints();
         }
     }
